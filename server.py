@@ -12,22 +12,32 @@ connections = []
 
 def handleConnection(c, a):
     global connections
-    while True:
-        data =  c.recv(1024)
-        for connection in connections:
-            # here we handle the client
-            connections.send(bytes(data))
-        if not data:
-            connections.remove(c)
-            c.close()
-            break
+    print('starting listenning')
+    with c:
+        while True:
+            data =  c.recv(1024)
+            print('sending massage')
+            if not data:
+                break
+            c.send(data)
+            # for connection in connections:
+            #     # here we handle the client
+            #     print('sending ' + bytes(data))
+            #     connection.send(bytes(data))
+            
+            # if not data:
+            #     c.close()
+            #     break
 
 
 print('Server started, listening on IP address ' + ip_address)
 while True:
     c, a = sock.accept()
-    connectionThread = threading.Thread(target=handleConnection, args=(c,a))
-    connectionThread.daemon = True #let the program get closed
-    connectionThread.start
     connections.append(c)
+    # handleConnection(c, a)
+    connectionThread = threading.Thread(target=handleConnection, args=(c,a))
+    # connectionThread.daemon = True #let the program get closed
+    connectionThread.start()
+    connectionThread.run()
+    print('excepted connection')
     print(connections)

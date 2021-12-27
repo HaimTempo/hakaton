@@ -3,23 +3,26 @@ import socket
 
 def getMessage():
     print('Enter your message:')
-    return input()
+    myMassage = input()
+    return myMassage
 
 
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host=socket.gethostname()
+host='localhost'
 port=7000
-s.connect((host,port))
+s.connect((host,port))  #todo if the server is down, will throw exception
+
+for i in range(4):
+    message = getMessage()
+
+    message=message.encode()
 
 
-message = getMessage()
+    s.send(message)
+    print('massage sent')
+    message= s.recv(1024)
 
-message=message.encode()
-
-
-s.send(message)
-message= s.recv(1024)
-
-print('Ciphertext: ')
-print(message)
+    print('client code here: ')
+    print(message)
 s.close()

@@ -1,9 +1,9 @@
 import socket
 
-s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s=socket.socket(socket.AF_INET, socket.SOCK_)
 host=socket.gethostname()
 host='localhost'
-port=7000
+port=13117
 s.connect((host,port))  #todo if the server is down, will throw exception
 
 for i in range(4):
